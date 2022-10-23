@@ -1,0 +1,61 @@
+.ProfileContainer{
+    justify-content: center;
+    background-color: black;
+    margin-top: 12px;
+    margin-left: 12px;
+    flex-basis: 20%;
+    
+}
+
+.Profile{
+    background-color: aliceblue;
+    flex-basis: 80%;
+    margin: 12px
+}
+
+.maincontainer{
+    display: flex;
+    background-color: gray;
+    height: 96vh;
+}
+
+.des{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 200px;
+    height: 40px;
+    background-color: aliceblue;
+    text-align: center;
+    margin-top: 60px;
+    
+
+}
+
+.buttonContainer{
+ display: flex;
+ justify-content: space-around;
+}
+.InnerProfile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.UserProfile{
+    width: 500px;
+    height: 500px;
+    border-radius: 20px;
+    background-color: white;
+    text-align: center;
+}
+.c{
+    text-align: start;
+    font-size: 24px;
+    font-weight: 600;
+}
+/* s */
+span {
+    color: white !important;
+}
