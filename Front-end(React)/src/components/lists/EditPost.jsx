@@ -4,26 +4,34 @@ import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { connect } from "react-redux";
 const EditPost = (props)=> {
-    const [red, setRed] = useState({title:'', description: ''});
     const {id} = useParams();
     const navigate = useNavigate();
-    const {data, editData, upData} = useFetch();
- 
+    //Функция для передачи данных для создания поста, получаемая из useFetch;
+    const [red, setRed] = useState({title: '', description: ''});
+    const {data, editData, upData , error} = useFetch();
+     // При изменении переменной check получаемый из ContentReducer обновляем посты
     useEffect(()=> {
         editData(id);
-        
-    },[props.check])
+      
+    },[props.check]) 
+
+    // Функция для обновления поста
     function FetcReq()
     {
-       props.SavePost()
-        upData(id,red);
-        
-        navigate(`/Posts/${id}`)
-        
+      props.SavePost()
+      upData(id,red);  
     }
-    return (<>
+   
+    function Back()
     {
-        data ?  <div className="container">
+      navigate(`/Posts/${data.id}`)
+    }
+    
+    return (<>
+     {
+       data ? 
+       <div className="container">
+        <h1>{error}</h1>
         <div className="mb-3">
      <label for="exampleFormControlInput1" className="form-label">Title</label>
      <input type="email" className="form-control" id="exampleFormControlInput1" placeholder= {data.title} onChange={(e)=> setRed({...red, title: e.target.value})}/>
@@ -32,24 +40,29 @@ const EditPost = (props)=> {
      <label for="exampleFormControlTextarea1" className="form-label" >Description</label>
      <input className="form-control" id="exampleFormControlTextarea1" rows="3" placeholder= {data.description} onChange={(e)=> setRed({...red, description: e.target.value})}></input>
    </div>
+   <div style={{'display': 'flex' , 'justifyContent' :'space-between'}}>
    <button onClick={FetcReq} className="btn btn-primary">Edit</button>
+   <button onClick={Back} className="btn btn-primary">Back</button>
    </div>
+   
+   </div>   
+       : 
+       <div>Загрузка!</div>
+     }
+         
         
-        
-        
-        
-        
-        :  <div></div>
-    }
+      
+    
 
     </>)
 }
+//Функция для изменения state *Reducer - ContentReducer*
 const mapToDispatchProps =(dispatch)=> {
     return {
       SavePost: () => dispatch({ type : "SET_POST",  payload : {edit : Math.random()}}),
     }
   }
-
+// Получаем state *Reducer - ContentReducer* для проверки изменений в нашем посте через хук useEffect
 const  mapToStateProps = (state) => {
   return {
     check : state.content.edit

@@ -7,14 +7,17 @@ import useFetch from "../../hooks/useFetch";
 import MySelect from "../UI/MySelect";
 import style from './lists.module.css'
 const Posts = (props)=> {
+  // С помощью хука записываем отсортированный список постов
    const [sort , setSort] = useState()
+    // С помощью хука записываем отсортированный и выбранный по значению из выпадающего списка список постов
    const [query , setQuery] = useState('');
    let {data,getData} = useFetch();
- 
-   const some = useEffect(()=> {
+   // Используем ху для получения постов и их своевременного обновления
+   useEffect(()=> {
       getData();   
     },[props.DeleteIs, props.CreateIs])
     
+   // используем хук для сортировки полученных постов
  const SortPost  = useMemo(()=> {
   if(data)
   {
@@ -29,7 +32,7 @@ const Posts = (props)=> {
   
     },[data,sort, props.DeleteIs, props.CreateIs])
     
-
+// используем хук для выборки полученных постов
 const QueryandSortedPost = useMemo(()=> {
    
       if(data)
@@ -87,12 +90,14 @@ const QueryandSortedPost = useMemo(()=> {
         </>
     )
 }
+// Получаем state *Reducer - ContentReducer* для проверки изменений в нашем посте через хук useEffect
   const mapToStateProps =(state)=> {
     return {
        DeleteIs: state.content.delete,
        CreateIs: state.content.create,
     }
   }
+  // Изменяем state *Reducer - ContentReducer*
   const mapToDispatchProps = (dispatch)=> {
     return {
       Create: ()=> dispatch({type: "CREATE_POST", payload : {create : Math.random()}})

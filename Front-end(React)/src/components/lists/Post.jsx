@@ -3,18 +3,18 @@ import { Link,  useParams } from "react-router-dom"
 import useFetch from "../../hooks/useFetch";
 import { connect } from "react-redux";
 const Post = (props)=> {
+     // Берем функции 
      const {data ,oneData, DeleteData} = useFetch();
     const {id} = useParams();
+    // Подгружаем актуальную/измененную информацию о посте
     useEffect(()=> {
-        oneData(id).then(()=> console.log('hi'));
-        
+        oneData(id);
   },[props.save])
+  // Функция для удаления поста
   const Delete = ()=> {
     props.DeletePost();
     DeleteData(id);
   }
-
-
     return (
         <>
         {
@@ -54,12 +54,14 @@ const Post = (props)=> {
         </>
     )
 }
+// Изменяем state *Reducer - ContentReducer*
 const mapToDispatchProps =(dispatch)=> {
   return {
     DeletePost: ()=> dispatch({type:"DELETE_POST", payload: {delete: Math.random()}}),
     EditPost: ()=> dispatch({type:"SET_POST", payload: {edit: Math.random()}})
   }
 }
+// Получаем state *Reducer - ContentReducer* для проверки изменений в нашем посте через хук useEffect
 const mapToStateProps =(state)=> {
     return {
        save: state.content.edit

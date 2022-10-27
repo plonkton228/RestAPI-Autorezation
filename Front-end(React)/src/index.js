@@ -7,10 +7,9 @@ import stores from './store';
 import axios from 'axios';
 import cookie from "js-cookie"
 
-
+//Подхватываем токен юзера если таковой есть в cookie
 let token = cookie.get('token');
 const render = ()=> {
-  
   const root = ReactDOM.createRoot(document.getElementById('root'));
   root.render(
     <Provider store={stores}>
@@ -19,6 +18,7 @@ const render = ()=> {
     document.getElementById("root")
   );
 }
+
 if(token)
 { 
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

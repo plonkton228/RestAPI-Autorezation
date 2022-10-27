@@ -3,16 +3,19 @@ import { connect } from "react-redux";
 import { useState } from 'react';
 import style from './lists.module.css'
 const Profile = (props)=> {
+  // C помощью хука ставим проверку на отоброжение либо информации о пользователе либо форму для изменения информации о пользователе
   const [stat, setStat] = useState(true) 
+  // С помощью хука записываем информацию из формы которые вводит пользователь 
   const [user, setUser] = useState({email: '', name: '', id: 1})
-
+  const [error, setError] = useState();
+  // Функция для редактирования информации
+ 
   const Edit = (e)=> {
     e.preventDefault();
     setUser({ ...user, id: props.id});
-    props.UpDate(user)
-    console.log(props.id);
-    console.log(user);
-    axios.patch('http://127.0.0.1:8000/api/auth/uPdate', user).then((res)=> console.log(res))
+    axios.patch('http://127.0.0.1:8000/api/auth/uPdate', user)
+    .then(()=> props.UpDate(user))
+    .catch((e)=>setError("Пожалуйста, заполните поля правильно") )
   }
     return(
         <>
@@ -35,10 +38,13 @@ const Profile = (props)=> {
                         <p>Email: {props.email}  </p>
                       </div>
                     </div> 
-                    : <div className= {style.UserProfile}>
+                    : 
+                    
+                    <div className= {style.UserProfile}>
+                           <h1>{error}</h1>
                     <h1>User</h1>
                     <hr></hr>
-                  
+                 
                     <form> 
  <div className="mb-3">
     <label for="exampleFormControlInput1" className="form-label">Email</label>
@@ -58,6 +64,7 @@ const Profile = (props)=> {
         </>
     )
 }
+// Получаем данные из state *Reducer - AuthReducer* lдля отрисовки информации о пользователе
 const mapToStateProps = (state)=> {
   return {
     name: state.auth.user.name,
@@ -65,6 +72,7 @@ const mapToStateProps = (state)=> {
     id: state.auth.user.id
   }
 }
+// изменяем state *Reducer - AuthReducer*
 const mapToDispatchProps = (dispatch)=> {
  return {
   UpDate : (user)=> dispatch({ type:"UPDATE_USER" ,   payloda:user})

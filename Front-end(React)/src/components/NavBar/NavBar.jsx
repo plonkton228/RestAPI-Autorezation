@@ -1,20 +1,18 @@
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { connect } from "react-redux";
 import Cookies from 'js-cookie';
 const NavBar = (props)=> {
-    console.log(props.loggedIn);
-  const Log = ()=> {
-    
-     
+ let navigate = useNavigate();
+// Функция для выхода 
+  const LogOut = ()=> {
       Cookies.remove('token');
       props.LogOut();
-      console.log('hi')
-    
-   
+      navigate('/Home')
   }
   return (
     <>
     {
+      // Проверка на авторизацию через переменную из props
         props.loggedIn ?      <nav className="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -30,7 +28,7 @@ const NavBar = (props)=> {
               </li>
             </ul>
           </div>
-          <button type="button" className="btn btn-primary" onClick={Log}>LogOut</button>
+          <button type="button" className="btn btn-primary" onClick={LogOut}>LogOut</button>
         </div>
         
       </nav>
@@ -57,11 +55,13 @@ const NavBar = (props)=> {
     </>
   )
 }
+//Достаем из хранилища  state *Reducer - AuthrReducer*
 const mapToStateProps = (state)=> {
    return {
      loggedIn : state.auth.loggedIn
    }
 }
+//Функция для изменения state *Reducer - AuthrReducer*
 const mapToDispatchProps = (dispatch)=> {
    return {
     LogOut : ()=> {dispatch({type: "SET_LOGOUT"})}

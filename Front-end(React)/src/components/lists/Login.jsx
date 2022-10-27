@@ -4,18 +4,21 @@ import Cookies  from 'js-cookie'
 import { connect } from "react-redux";
 import {  useNavigate } from 'react-router-dom';
 const Login = (props)=> {
-    const [user , setUser] = useState({email: '', password : '', error: {}})
+   // Храним и изменяем информацию которую вводит пользователь с помощью хука useState
+    const [user , setUser] = useState({email: '', password : '', error:''})
     const navigate = useNavigate();
+    // Функция для авторизации
     const clickhandle = (e)=> {
         e.preventDefault();
         const data = {email: user.email, password: user.password}
         axios.post('http://127.0.0.1:8000/api/auth/login', data)
         .then((res)=> {Cookies.set('token', res.data.access_token); props.Some(res.data.user); navigate("/Profile")} )
-        .catch((e)=> console.log(e))
+        .catch((e)=> setUser({...user, error: 'Пожалуйста, заполните поля правильно!'}))
     }
     return(
         <>
 <div className= {['container'].join(' ')}>
+  <h1>{user.error}</h1>
     <form> 
  <div className="mb-3">
     <label for="exampleFormControlInput1" className="form-label">Email address</label>
@@ -32,6 +35,7 @@ const Login = (props)=> {
         </>
     )
 }
+// Изменяем state *Reducer - AuthrReducer*
 const mapDispatchToProps = (dispatch)=> {
   return {
     Some: user => dispatch({type: "SET_LOGIN", payload: user})

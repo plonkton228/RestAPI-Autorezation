@@ -4,15 +4,15 @@ import useFetch from "../../hooks/useFetch";
 
 const Create = ()=> {
     const [post, setPost] = useState({title: '', description: ''});
-    const{postData} = useFetch();
-    const navigate = useNavigate()
+    //Функция для передачи данных для создания поста, получаемая из useFetch;
+    const{postData,error} = useFetch();
     const DataPost =()=> {
       postData(post);
-      navigate('/Posts');
     }
     return (
         <>
         <div className="container">
+        <h1>{error}</h1>
         <div className="mb-3">
          <label for="exampleFormControlInput1" className="form-label">title</label>
          <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Введите заголовок" onChange={(e)=> {setPost({...post, title: e.target.value})}}/>
